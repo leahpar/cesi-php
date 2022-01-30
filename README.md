@@ -1041,7 +1041,7 @@ send_sms(+33623456789, "Yo!");
 > 💡Nouvelle erreur courante : mauvais nom de fichier
 > `Warning: require(function.php): Failed to open stream: No such file or directory in /var/www/cesi/php/toto.php on line 2`
 
-#### Exercice
+### Exercice
 
 - Initialiser une liste de données (petites annonces, collection de films...) dans un fichier php. Ex :
 ```php
@@ -1112,8 +1112,8 @@ Pour transmettre des données du client au serveur par un formulaire
 
 ```html
 <form action="toto.php" method="post">
-	<input name="var1">
-	<input name="var2">
+  <input name="var1">
+  <input name="var2">
 </form>
 ```
 
@@ -1137,7 +1137,7 @@ Cas particuliers  `select`
   <option value="">Choisissez une valeur</option>
   <option value="toto">Toto</option>
   <option value="titi">Titi</option>
- </select>
+</select>
 ```
 ```php
 echo $_POST["var"];     // "" ou "titi" ou "toto"
@@ -1230,11 +1230,10 @@ print_r($_SESSION); //   Array( )
 
 - Modifier la page `enregistrer.php` pour stocker la donnée enregistrer en session.
 - Modifier la page `enregistrer.php` pour remplacer l'affichage par une redirection vers la page `lister.php`
-    - 💡`header('Location: lister.php');`
+  - 💡`header('Location: lister.php');`
 - Modifier la page `listeFilms.php`  pour "renvoyer" **toutes** les données (données en dur + les données en session) afin que les pages `lister.php` et `afficher.php` fonctionnent avec **toutes** les données.
 - Sur la page `enregistrer.php`, ajouter en session un message de confirmation qui sera affiché sur la page `lister.php` après la redirection (= message flash).
 - Nettoyer le code (utiliser des fonctions, inclure des fichiers, ajouter des commentaires, renommer les variables...)
-- Créer une page `login.php` (authentification fictive pour l'instant), et modifier le header pour afficher un lien "se connecter" si l'utilisateur n'est pas connecté, afficher "Boujour XXXX" si l'utilisateur est connecté.
 - Modifier la page `lister.php` pour ajouter un lien de suppression sur les éléments.
 - Créer la page `supprimer.php` qui supprime un élément.
 
@@ -1303,6 +1302,143 @@ Ajouter une gestion d'upload de photos sur le site :
 
 
 
+## PDO
+
+**PHP Data Objects** = Interface d'accès à la base de données.
+
+> 💡PHPMyAdmin
+
+### Connexion à la BDD
+
+```php
+// bdd.php
+$user = 'root';
+$pass = '';
+$db = new PDO('mysql:host=localhost;dbname=mydb;charset=utf8', $user, $pass);
+$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+```
+
+La déconnexion est implicite à la fin du script. `$db = null;` pour se déconnecter explicitement.
+
+
+### Exécuter des requêtes
+
+1. Préparer la requête
+2. Renseigner les paramètres s'il y en a
+3. Exécuter la requête
+4. Récupérer le résultat s'il y en a
+
+#### Requête simple
+```php
+$request = $db->prepare("SELECT * FROM ...");
+$request->execute();
+$rows = $request->fetchAll(); // Récupère toutes les lignes d'un coup
+foreach ($rows as $row) {
+    // ...
+}
+```
+```php
+$request = $db->prepare("SELECT * FROM ...");
+$request->execute();
+while ($row = $request->fetch()) { // Récupère les lignes 1 par 1
+    // ...
+}
+```
+```php
+$req = $db->prepare("select count(*) as cpt from ...");
+$req->execute();
+$row = $request->fetch(); // Récupère une seule ligne
+$count = $row['cpt'];
+$rows = $request->fetchall();
+$count = $rows[0]['cpt'];
+```
+
+#### Requête avec paramètres
+```php
+$request = $db->prepare("SELECT * FROM ... where col = :value");
+$request->bindValue(':value', $value);
+$request->execute();
+```
+
+#### INSERT
+```php
+$req = $db->prepare("INSERT ... ");
+$req->execute();
+$last_id = $db->lastInsertId();
+```
+
+#### UPDATE
+```php
+$req = $db->prepare("UPDATE ... ");
+$req->execute();
+```
+
+#### DELETE
+```php
+$req = $db->prepare("DELETE ... ");
+$req->execute();
+```
+
+### Les transactions
+
+Pour garder la base de données dans un état stable.
+
+```php
+$db->beginTransaction();
+// ...
+if ($errors) {
+    // Il y a des erreurs quelconques, on annule tout
+    $db->rollback();
+}
+else {
+    // Tout va bien, on enregistre
+    $db->commit();
+}
+```
+
+> NB: sans transaction, le `commit()` est implicite à chaque `execute()`.
+
+
+### Exercice
+
+- Reprendre le site en gérant les données dans une base de données au lieu de la session.
+
+
+## Authentification
+
+2 fonctions utiles :
+
+- `password_hash(string $password, $algo)` pour chiffrer un mot de passe
+- `password_verify(string $password, string $hash): bool` pour vérifier un mot de passe
+
+```php
+$plainPassword = "toto123";
+$password = password_hash($plainPassword, PASSWORD_DEFAULT);
+echo $password; // $2y$10$YdDyY9eiHe15cPMYIWeRSuueS7V5DfoQZXC96lM9G6AcrF
+$plainPassword = null; // Symbolique
+
+$check = password_verify("azerty", $password);     // $check = false
+$check = password_verify("TOTO123", $password);    // $check = false
+$check = password_verify("toto123", $password);    // $check = true
+```
+
+Le reste c'est **juste** du stockage d'utilisateurs en base et de la gestion de session !
+
+
+### Exercice
+
+- Ajouter une page `inscription.php` pour que les utilisateurs puissent s'inscrire :
+  1. Formulaire avec pseudo et mot de passe
+  2. Vérification que le pseudo n'existe pas déjà en base
+  3. Chiffrer le mot de passe et ajout d'une ligne dans la table `utilisateurs`
+- Ajouter une page `connexion.php` pour que les utilisateurs puissent se connecter
+  1. Formulaire avec pseudo et mot de passe
+  2. Véfifier que le pseudo existe en base
+  3. Vérifier que le mot de passe correspond
+  4. Créer une session et stocker le pseudo de l'utilisateur
+- Ajouter une page `deconnexion.php`
+  1. Détruire la session
 
 
 
