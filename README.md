@@ -1,3 +1,4 @@
+
 INFAL156-PHP et MySQL - Raphaël Bacco
 
 # PHP
@@ -11,10 +12,10 @@ https://github.com/leahpar/cesi-php
 
 ## Installation
 
-- [ ] PHP
-- [ ] Base de données (MySQL / MariaDB / PostgreSQL / SQLite)
-- [ ] Serveur web (Apache / Nginx)
-- [ ] PhpMyAdmin ou autre
+- PHP
+- Serveur web (Apache / Nginx)
+- Base de données (MySQL / MariaDB / PostgreSQL / SQLite)
+- PhpMyAdmin ou autre
 
 Bundles :
 
@@ -28,6 +29,8 @@ Bundles :
 ## PHP - Les bases
 
 ### Syntaxe
+
+`fichier.php`
 
 ```php
 <!-- ici du code html -->
@@ -60,13 +63,13 @@ echo $ma_variable;          // Affiche "Hello World!"
 ```php
 ✅ $ma_variable
 ✅ $superVariable
-✅ $supervariable		// ⚠️ Différent de $superVariable
-⚠️ $SuperVariable		// Pas de majuscule en début (par convention)
-❌ $ma-variable			// Pas de tiret
-❌ $ma variable   		// Pas d'espace
-❌ $prénom				// Pas d'accent
+✅ $supervariable         // ⚠️ Différent de $superVariable
+⚠️ $SuperVariable         // Pas de majuscule en début (par convention)
+❌ $ma-variable           // Pas de tiret
+❌ $ma variable           // Pas d'espace
+❌ $prénom                // Pas d'accent
 ✅ $maVariable2
-❌ $2maVariable			// Pas de chiffre en début
+❌ $2maVariable           // Pas de chiffre en début
 ```
 
 **Types de variables**
@@ -78,8 +81,8 @@ $a = "42";                  // string
 $a = true;                  // boolean
 $a = false;
 $a = null;                  // NULL
-$a = [...];					// array
-$a = new Object();			// object
+$a = [...];                 // array
+$a = new Object();          // object
 ```
 
 ** Opérations mathématiques**
@@ -87,23 +90,17 @@ $a = new Object();			// object
 ```php
 $a = 40 + 2;                // 42 (int)
 
-$a = 4 * (2.2 - 12) / 144;  // -0.272222222 (float)
-
-$b = $a / 2;				// 24 (int)
-
-$a = 42;
-$a = $a + 1;
-$a += 1;
-$a++;
+$a = 4 / 2;                 // 2 (int)
+$a = 4 / 3;                 // 1.333333 (float)
 ```
 
 ** Opérations sur les chaines**
 
 ```php
-$a = "Hello" . "world!";    // "Helloworld!" (string)
+$a = "Hello" . "world!";         // "Helloworld!" (string)
 
 $world = "world";
-$a = "Hello " . $world . "!";   // "Hello world!"
+$a = "Hello " . $world . "!";    // "Hello world!"
 
 $annee = 2022;
 $a = "Nous sommes en " . $annee; // "Nous sommes en 2022"
@@ -125,8 +122,8 @@ $c = ($a && $b);               // true AND false       = false
 $a = 42;
 $b = 21;
 
-$c = ($a == $b);               // true
-$c = ($a != $b);               // false
+$c = ($a == $b);               // false
+$c = ($a != $b);               // true
 $c = ($a >  $b);               // true
 $c = ($a >= $b);               // true
 $c = ($a <  $b);               // false
@@ -134,6 +131,10 @@ $c = ($a <= $b);               // false
 ```
 
 > ⚠️ `$a = $b` (affectation) VS `$a == $b` (comparaison)
+```php
+$c = ($a = $b);                // a = b = c = 21
+```
+
 
 **Comparaison VS comparaison stricte** :
 
@@ -144,37 +145,51 @@ $a = 42;
 $b = "42";
 $c = 42.0;
 
-$a == $b;		// true
-$a == $c;		// true
-$b != $c;		// false
-$a === $b;		// false
-$a === $c;		// false
-$b !== $c;		// true
+$a == $b;         // true
+$a == $c;         // true
+$b != $c;         // false
+$a === $b;        // false
+$a === $c;        // false
+$b !== $c;        // true
 ```
 
 **conversion implicite**
 
 ```php
- 40  +  2			// 42
- 40  +  2.0			// 42.0
- 40  + "2"			// 42
-"40" + "2"			// 42
-"40" . "2"			// 402
- 40  . "2"			// 402
- 40  .  2			// 402
+ 40  +  2             // 42
+ 40  +  2.0           // 42.0
+ 40  + "2"            // 42
+"40" + "2"            // 42
+"40" . "2"            // 402
+ 40  . "2"            // 402
+ 40  .  2             // 402
 ```
-
-> ⚠️ à éviter tant que possible tout de même
 
 **Booléens** : tout est vrai, "rien" est faux
 
 ```php
-0  == false			// true
-"" == false			// true
-[] == false			// true
-null == false		// true
+0    == false           // true
+""   == false           // true
+[]   == false           // true
+null == false           // true
 ```
-
+```php
+0    === false          // false
+""   === false          // false
+[]   === false          // false
+null === false          // false
+```
+Ne pas abuser des conversions implicites :
+```php
+0    == ""          // false
+""   == []          // false
+[]   == null        // true
+0    == null        // true
+""   == null        // true
+"0"  == null        // false
+// ...
+```
+> `strlen($str)`, `count($array)`...
 
 ### Tableaux
 
@@ -184,17 +199,17 @@ $prenoms = ["Pierre", "Paul", "Jacques"];
 ```
 ```php
 $prenoms = [
-	"Pierre",
-	"Paul",
-	"Jacques",
+    "Pierre",
+    "Paul",
+    "Jacques",
 ];
 ```
 
 Indices explicites :
 ```php
 $prenoms[0] = "Pierre";
-$prenoms[1] = "Paul";
 $prenoms[2] = "Jacques";
+$prenoms[1] = "Paul";
 ```
 
 Ajout à la suite :
@@ -247,24 +262,24 @@ $age = [
 ```
 
 ```php
-echo $age[$prenoms[0]];     // = $age["Pierre"] = 42
-echo $age[$prenoms[2]];     // PHP Notice: Undefined index: Jacques
+echo $age["Pierre"];        // 42
+echo $age[$prenoms[0]];     // 42
 ```
 
 **Tableaux multidimensionnels**
 
 ```php
 $participants = [
-	"Pierre"  => ["prenom" => "Pierre", "age" => 42],
-	"Paul"    => ["prenom" => "Paul",   "age" => 51],
-	"Jacques" => ["prenom" => "Jacques"],
+    "Pierre"  => ["prenom" => "Pierre", "age" => 42],
+    "Paul"    => ["prenom" => "Paul",   "age" => 51],
+    "Jacques" => ["prenom" => "Jacques"],
 ];
 ```
 
 ```php
-echo $participants["Pierre"]["age"];		// 42
-echo $participants["Paul"]["prenom"];		// Paul
-echo $participants["Jacques"]["age"];		// PHP Warning:  Undefined array key "age"
+echo $participants["Pierre"]["age"];         // 42
+echo $participants["Paul"]["prenom"];        // Paul
+echo $participants["Jacques"]["age"];        // PHP Warning:  Undefined array key "age"
 ```
 
 
@@ -311,35 +326,36 @@ hello("Julie");       // Affiche "Hello Julie !"
 
 ```php
 function somme($a, $b) {
-	$somme = $a + $b;
-	return $somme;
+    $somme = $a + $b;
+    return $somme;
 }
 
-echo somme(20, 22);			// Affiche "42"
+echo somme(20, 22);            // Affiche "42"
 ```
 
 **Paramètres facultatifs**
 
 ```php
 function somme($a, $b, $c=0, $d=0) {
-	return $a + $b + $c + $d;
+    return $a + $b + $c + $d;
 }
-echo somme(20, 22);				// Affiche "42"
-echo somme(20, 22, 10);			// Affiche "52"
-echo somme(20, 22, 10, 12);		// Affiche "64"
+echo somme(20, 22);                // Affiche "42"
+echo somme(20, 22, 10);            // Affiche "52"
+echo somme(20, 22, 10, 12);        // Affiche "64"
 ```
 
-**Bonus: typage des paramètres**
+**Bonus: typage explicite**
 
 ```php
 function somme(int $a, int $b): int {
-	return $a + $b;
+    return $a + $b;
 }
 ```
 Paramètres convertis si possible :
 ```php
-echo somme(1, 2);		// 3
-echo somme(1, 2.1);		// 3
+echo somme(1, 2);        // 3
+echo somme(1, "2");      // 3
+echo somme(1, 2.1);      // 3
 ```
 
 Erreur si pas possible :
@@ -352,11 +368,11 @@ echo somme(1, null);
 
 ```php
 function somme(...$nombres) {
-	return $nombres[0] + $nombres[1] + $nombres[2] + ...;
+    return $nombres[0] + $nombres[1] + $nombres[2] + ...;
 }
-somme(42);				// $nombres = [42]
-somme(40, 2);			// $nombres = [40, 2]
-somme(40, 2, 12);		// $nombres = [40, 2, 12]
+somme(42);               // $nombres = [42]
+somme(40, 2);            // $nombres = [40, 2]
+somme(40, 2, 12);        // $nombres = [40, 2, 12]
 ```
 
 **Bonus : fonction variable et fonction anonyme**
@@ -364,27 +380,27 @@ somme(40, 2, 12);		// $nombres = [40, 2, 12]
 ```php
 // Fonction "normale"
 function somme($a, $b) {
-	return $a + $b;
+    return $a + $b;
 }
 
 // fonction variable 
 $f = 'somme';
-echo $f.'(20, 22)';			// "somme(20, 22)"
-echo $f(20, 22);			// 42
+echo $f;                    // "somme"
+echo $f(20, 22);            // 42
 ```
 ```php
 // Fonction anonyme
 $f = function($a, $b) {
-	return $a + $b;
-};	// Ne pas oublier le ';' ici
+    return $a + $b;
+};    // Ne pas oublier le ';' ici
 
-echo $f(20, 22);			// 42
+echo $f(20, 22);            // 42
 ```
 ```php
 // Fonction anonyme (notation simplifiée)
 $f = fn($a, $b) => $a + $b;
 
-echo $f(20, 22);			// 42
+echo $f(20, 22);            // 42
 ```
 
 
@@ -396,16 +412,16 @@ Pour exécuter ou non du code suivant des conditions.
 
 ```php
 if (CONDITION 1) {
-	// ...
+    INSTRUCTIONS;
 }
 else if (CONDITION 2) {
-	// ...
+    INSTRUCTIONS;
 }
 else if (CONDITION 3) {
-	// ...
+    INSTRUCTIONS;
 }
 else {
-	// ...
+    INSTRUCTIONS;
 }
 ```
 
@@ -437,6 +453,21 @@ else if ($bar_ouvert == false) {
 #### SWITCH
 
 ```php
+switch (VARIABLE) {       // et pas CONDITION
+    case VALEUR 1:
+        INSTRUCTIONS;
+        break;
+    case VALEUR 2:
+    case VALEUR 3:
+        INSTRUCTIONS;
+        break;
+    default:
+        INSTRUCTIONS;
+        break;
+}
+```
+
+```php
 $couleur = "bleu";
 
 switch ($couleur) {
@@ -447,10 +478,10 @@ switch ($couleur) {
         echo "La voiture est rouge";
         break;
     case "vert":
+    case "emeraude":
+    case "avocat":
+    case "olive":
         echo "La voiture est verte";
-        break;
-    case "jaune":
-        echo "La voiture est jaune";
         break;
     default:
         echo "On ne sait pas de quelle couleur est la voiture";
@@ -468,15 +499,15 @@ Boucle à condition d'arrêt *à priori* inconnue
 
 ```php
 while (CONDITION) {
-	// code exécuté tant que CONDITION == true
+    // code exécuté tant que CONDITION == true
 }
 ```
 
 ```php
 $i = 0;
 while ($i < 10) {
-	echo $i;
-	$i = $i + 1;
+    echo $i;
+    $i = $i + 1;
 }
 // Affiche: 0 1 2 3 4 5 6 7 8 9
 ```
@@ -486,15 +517,15 @@ while ($i < 10) {
 ```php
 $erreur = false;
 while ($erreur == false) {
-	// ... 
-	$erreur = fonction_qui_verifie_quelque_chose();
+    // ... 
+    $erreur = fonction_qui_verifie_quelque_chose();
 }
 ```
 
 ```php
 decoller_fusee();
 while (!lune_atteinte()) {
-	avancer_fusee();
+    avancer_fusee();
 }
 alunir_fusee();
 ```
@@ -505,7 +536,7 @@ Boucle à condition d'arrêt *à priori* connue
 
 ```php
 for (INSTRUCTION 1 ; CONDITION ; INSTRUCTION 2) {
-	// code exécuté tant que CONDITION == true
+    // code exécuté tant que CONDITION == true
 }
 ```
 
@@ -513,23 +544,23 @@ Equivalent avec un `while` :
 ```php
 INSTRUCTION 1;
 while (CONDITION) {
-	// ...
-	INSTRUCTION 2;
+    // ...
+    INSTRUCTION 2;
 }
 ```
 
 ```php
 for ($i=0; $i<10; $i++) {
-	// $i = 0, 1, 2...
-	echo $i;
+    // $i = 0, 1, 2...
+    echo $i;
 }
 // Affiche: 0 1 2 3 4 5 6 7 8 9
 ```
 
 ```php
 for ($i=10; $i>0; $i--) {
-	// $i = 10, 9, 8...
-	echo $i;
+    // $i = 10, 9, 8...
+    echo $i;
 }
 // Affiche: 10 9 8 7 6 5 4 3 2 1
 ```
@@ -540,8 +571,8 @@ $alphabet = ['a', 'b', 'c'... 'z' ];
 // NB: $alphabet[0] = a;
 // NB: $alphabet[25] = z
 for ($i=0; $i<count($alphabet); $i++) {
-	// $i = 0, 1, 2...
-	echo "La ".($i+1)."e lettre de l'alphabet est " . $alphabet[$i];
+    // $i = 0, 1, 2...
+    echo "La ".($i+1)."e lettre de l'alphabet est " . $alphabet[$i];
 }
 // La 1e lettre de l'alphabet est a
 // La 2e lettre de l'alphabet est b
@@ -556,15 +587,15 @@ Boucle de parcours d'un tableau
 
 ```php
 foreach (TABLEAU as VALEUR) {
-	// code exécuté pour chaque VALEUR de TABLEAU
+    // code exécuté pour chaque VALEUR de TABLEAU
 }
 ```
 
 ```php
 $alphabet = ['a', 'b', 'c'... 'z' ];
 foreach ($alphabet as $lettre) {
-	// $lettre = a, b, c...
-	echo $lettre;
+    // $lettre = a, b, c...
+    echo $lettre;
 }
 // Affiche: a b c d e... z
 ```
@@ -572,9 +603,9 @@ foreach ($alphabet as $lettre) {
 ```php
 $alphabet = ['a', 'b', 'c'... 'z' ];
 foreach ($alphabet as $cle => $lettre) {
-	// cle = 0, 1, 2...
-	// $lettre = a, b, c...
-	echo "La ".($lettre+1)."e lettre de l'alphabet est " . $lettre;
+    // cle = 0, 1, 2...
+    // $lettre = a, b, c...
+    echo "La ".($lettre+1)."e lettre de l'alphabet est " . $lettre;
 }
 // La 1e lettre de l'alphabet est a
 // La 2e lettre de l'alphabet est b
@@ -585,12 +616,12 @@ foreach ($alphabet as $cle => $lettre) {
 
 ```php
 $participants = [
-	"Pierre"  => [ "ville" => "Rouen", "age" => 42 ],
-	"Paul"    => [ "ville" => "Paris", "age" => 51 ],
-	"Jacques" => [ "ville" => "Saint-Pierre-et-Miquelon", "age" => 33 ],
+    "Pierre"  => [ "ville" => "Rouen", "age" => 42 ],
+    "Paul"    => [ "ville" => "Paris", "age" => 51 ],
+    "Jacques" => [ "ville" => "Saint-Pierre-et-Miquelon", "age" => 33 ],
 ];
 foreach ($participant as $prenom => $data) {
-	echo $prenom . " a " . $data['age'] . " ans et habite à " . $data['ville']; 
+    echo $prenom . " a " . $data['age'] . " ans et habite à " . $data['ville']; 
 }
 // Pierre a 42 ans et habite à Rouen
 // Paul a 51 ans et habite à Paris
@@ -618,9 +649,9 @@ Le même code lisible :
 $distance_lune = 384000;
 
 while ($distance_lune > 0) {
-	// Tant qu'on n'a pas atteint la Lune...
-	
-	echo $distance_lune . " km restants";
+    // Tant qu'on n'a pas atteint la Lune...
+    
+    echo $distance_lune . " km restants";
 
     // On avance la fusée
     avance_fusee();
@@ -642,7 +673,7 @@ echo $a;
 
 ```php
 function somme($a, $b)
-	return $a + $b;
+    return $a + $b;
 }
 // Parse error: syntax error, unexpected token "return", expecting "{" in /var/www/cesi/php/toto.php on line 3
 ```
@@ -674,7 +705,7 @@ Appel à une fonction inconnue
 
 ```php
 function somme($a, $b) {
-	return $a + $b;
+    return $a + $b;
 }
 echo some(40, 2);
 // Fatal error: Uncaught Error: Call to undefined function some() in /var/www/cesi/php/toto.php:4
@@ -684,7 +715,7 @@ Mauvais nombre de paramètres
 
 ```php
 function somme($a, $b, $c) {
-	return $a + $b + $c;
+    return $a + $b + $c;
 }
 echo somme(40, 2);
 // Fatal error: Uncaught ArgumentCountError: Too few arguments to function somme(), 2 passed in /var/www/cesi/php/toto.php on line 4 and exactly 3 expected in /var/www/cesi/php/toto.php:1
@@ -694,7 +725,7 @@ Mauvais type de paramètre
 
 ```php
 function somme(int $a, int $b) {
-	return $a + $b;
+    return $a + $b;
 }
 echo some(40, [2]);
 //  Fatal error: Uncaught TypeError: somme(): Argument #2 ($b) must be of type int, array given, called in /var/www/cesi/php/toto.php on line 4 and defined in /var/www/cesi/php/toto.php:1
@@ -713,36 +744,35 @@ echo $a;
 
 **1.1** Ecrire les fonctions `somme($x, $y)`, `produit($x, $y)`, `pythagore($a, $b)`
 
-**1.2** Ecrire les fonctions `min($x, $y)`, `max($x, $y)`.
+**1.2** Ecrire les fonctions `minimum($x, $y)`, `maximum($x, $y)`.
 
 **1.3** Ecrire les fonctions `factorielle($x)`, `puissance($x, $y)`.
 
-**1.4** Ecrire les fonctions `min(...$nombres)`, `max(...$nombres)`, `moyenne(...$nombres)`.
+**1.4** Ecrire les fonctions `minimum2(...$nombres)`, `maximum2(...$nombres)`, `moyenne2(...$nombres)`.
 
 **1.5** Ecrire une fonction qui retourne la liste des nombres premiers entre 2 nombres en paramètres.
-`1`, `2`, `3`, `5`, `7`...
 
 Bonus :
 - Gérer les cas particuliers (0 et 1)
 - Gérer les nombres négatifs
 - Gérer les paramètres dans le désordre
 
-**1.6** Ecrire une fonction qui retourne la liste des N premiers éléments de la suite de Conway (opérations sur les strings).
-`1`, `11`, `21`, `1211`, `111221`...
-
-**1.7** Ecrire une fonction qui retourne la liste des N premiers nombres de la suite de Fibonacci (fonction récursive).
+**1.6** Ecrire une fonction qui retourne le N-ième nombre de la suite de Fibonacci (fonction récursive).
 `0`, `1`, `1`, `2`, `3`, `5`, `8`, `13`...
+
+**1.7** Ecrire une fonction qui retourne la liste des N premiers éléments de la suite de Conway (opérations sur les strings).
+`1`, `11`, `21`, `1211`, `111221`...
 
 **1.8** Ecrire des fonctions de tri qui prennent en paramètre un tableau de nombres à trier :
 - tri bulle (https://fr.wikipedia.org/wiki/Tri_%C3%A0_bulles)
 - tri par insertion (https://fr.wikipedia.org/wiki/Tri_par_insertion)
-- tri rapide (https://fr.wikipedia.org/wiki/Tri_rapide)
 
 Bonus : Ecrire une fonction de tri générique qui prend en paramètre un tableau à trier et le nom de l'algorithme à utiliser. ex:`tri([42, 321, 22, 6, 1], "bulle")`.
 
+
 ## programmation fonctionnelle
 
-Juste pour se faire des noeuds au cerveau ! (Mais quand même pratique pour des traitements sur des tableaux)
+Juste pour se faire des noeuds au cerveau ! (Mais quand même pratique pour des traitements sur des tableaux).
 
 > Les fonctions peuvent être passées en tant qu’argument à d’autres fonctions et une fonction peut retourner une autre fonction.
 
@@ -756,7 +786,7 @@ $tableau = [1, 2, 3, 4];
 
 ```php
 function plus1($a) {
-	return $a + 1;
+    return $a + 1;
 }
 $resultat = array_map('plus1', $tableau);
 print_r($resultat);
@@ -792,12 +822,12 @@ $tableau = [1, 2, 3, 4];
 
 ```php
 function isPair($a) {
-	if ($a%2 == 0) {
-		return true;
-	}
-	else {
-		return false;
-	}
+    if ($a%2 == 0) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 $resultat = array_filter($tableau, 'isPair');
 print_r($resultat);
@@ -829,7 +859,7 @@ $tableau = [1, 2, 3, 4];
 
 ```php
 function somme($valeurPrecedente, $a) {
-	return $valeurPrecedente + $a;
+    return $valeurPrecedente + $a;
 }
 $resultat = array_reduce($tableau, 'somme', 0);
 echo $resultat; // 10
@@ -844,20 +874,50 @@ $resultat = array_reduce($tableau, fn($v, $a) => $v + $a, 0);
 echo $resultat; // 10
 ```
 
+### Fonction retourne une fonction
+
+```php
+function puissance($y) {
+    return fn($x) => pow($x, $y);
+}
+
+$carre = puissance(2);
+
+echo $carre;
+// PHP Fatal error:  Uncaught Error: Object of class Closure could not be converted to string 
+
+echo $carre(2);        // 4
+echo $carre(3);        // 9
+
+$cube = puissance(3);
+echo $cube(2);         // 8
+echo $cube(3);         // 27
+
+print_r($carre);
+/*
+Closure Object (
+    [static] => Array  (
+        [y] => 2
+    )
+    [parameter] => Array (
+        [$x] => <required>
+    )
+)*/
+```
+
 ### Exercices
 
+**2.0** Ecrire les fonctions `array_map2()`, `array_filter2()` et `array_reduce2()`
+
 Reprendre les exercices précédents en utilisant les fonctions sur les tableaux.
+
+**2.3** Ecrire les fonctions `factorielle2($x)`, `puissance2($x, $y)`.
 > 💡`range(0, 10) = [0, 1, 2... 10]`
+> 💡`fill(0, 10, 42) = [42, 42, 42... 42]`
 
-**2.3** Ecrire les fonctions `factorielle($x)`, `puissance($x, $y)`.
-
-**2.4** Ecrire les fonctions `min(...$nombres)`, `max(...$nombres)`, `moyenne(...$nombres)`.
+**2.4** Ecrire les fonctions `minimum3(...$nombres)`, `maximum3(...$nombres)`, `moyenne3(...$nombres)`.
 
 **2.5** Ecrire une fonction qui retourne la liste des nombres premiers entre 2 nombres en paramètres.
-
-**2.6** Ecrire une fonction qui retourne la liste des N premiers éléments de la suite de Conway (opérations sur les strings).
-
-**2.7** Ecrire une fonction qui retourne la liste des N premiers nombres de la suite de Fibonacci (fonction récursive).
 
 **2.8** Ecrire une fonction de tri générique qui prend en paramètre un tableau à trier et le nom de l'algorithme à utiliser.
 
@@ -869,7 +929,7 @@ Pour découper le code dans plusieurs fichiers, pour pouvoir réutiliser des bou
 ```php
 // fichier1.php
 function hello($nom) {
-	echo "Hello " . $nom . "!";
+    echo "Hello " . $nom . "!";
 }
 ```
 ```php
@@ -891,15 +951,15 @@ Pratique pour plusieurs pages d'un site :
 ```php
 // menu.php
 <nav>
-	<a href="page1.php">Page 1</a>
-	<a href="page2.php">Page 2</a>
-	<a href="page3.php">Page 3</a>
+    <a href="page1.php">Page 1</a>
+    <a href="page2.php">Page 2</a>
+    <a href="page3.php">Page 3</a>
 </nav>
 ```
 ```php
 // footer.php
 <div>
-	Copyright 2000 (c) - tout droits réservés
+    Copyright 2000 (c) - tout droits réservés
 </div>
 ```
 ```php
@@ -947,16 +1007,20 @@ Inclusions imbriquées, et inclusions multiples avec `require_once`
 
 ```php
 // functions.php
+function toto() {...}
+function tata() {...}
 // ...
 ```
 ```php
 // email.php
 require_once "functions.php";
+function send_email() { ... }
 // ...
 ```
 ```php
 // sms.php
 require_once "functions.php";
+function send_sms() { ... }
 // ...
 ```
 ```php
@@ -964,11 +1028,297 @@ require_once "functions.php";
 require "functions.php";
 require "email.php";
 require "sms.php";
+
+$truc = toto($machin);
+send_email("juste@leblanc.com", "Mail de confirmation d'inscription", "bla bla bla");
+send_sms(+33623456789, "Yo!");
 // ...
+
 ```
-> ⚠️ Sans `require_once` : `Fatal error: Cannot redeclare toto() (previously declared in /var/www/cesi/php/functions.php:2) in /var/www/cesi/php/functions.php on line 2`
+> 💡 Nouvelle erreur courante : oubli du `_once`
+>  `Fatal error: Cannot redeclare toto() (previously declared in /var/www/cesi/php/functions.php:2) in /var/www/cesi/php/functions.php on line 2`
 
 > 💡Nouvelle erreur courante : mauvais nom de fichier
-> `Warning: require(functions.php): Failed to open stream: No such file or directory in /var/www/cesi/php/toto.php on line 2`
+> `Warning: require(function.php): Failed to open stream: No such file or directory in /var/www/cesi/php/toto.php on line 2`
 
-TO BE CONTINUED...
+#### Exercice
+
+- Initialiser une liste de données (petites annonces, collection de films...) dans un fichier php. Ex :
+```php
+// listeFilms.php
+$films = [
+	0 => ['titre' => 'Le seigneur des anneaux', 'annee' => 2001, 'duree' => '178', ...],
+	1 => [...],
+	...
+];
+```
+
+- Créer un mini site (html) qui affiche la liste des données et quelques éléments comme un menu (avec des liens fictif pour l'instant), un header, un footer...
+
+
+## Les variables "super globales"
+
+Variables qui existent en dehors du code PHP pour décrire le contexte d'exécution.
+
+### $_SERVER
+
+Contient des informations sur le serveur et le client.
+
+```php
+print_r($_SERVER);
+Array(
+	[SCRIPT_NAME] => /toto.php
+	[REMOTE_ADDR] => 172.18.0.1
+	[SERVER_PORT] => 80
+	[SERVER_ADDR] => 172.18.0.6
+	[SERVER_NAME] => cesi.local
+	[SERVER_SOFTWARE] => Apache/2.4.51 (Unix)
+	[HTTP_USER_AGENT] => Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36
+	...
+)
+```
+
+### $_GET
+
+Pour transmettre des données du client au serveur par l'URL
+
+```
+http://example.com/toto.php?var1=toto&var2=titi
+```
+
+```php
+// toto.php
+print_r($_GET);
+echo "var2 = " . $_GET['var2'];
+```
+```
+Array
+(
+    [var1] => toto
+    [var2] => titi
+)
+var2 = toto
+```
+
+#### Exercice
+
+- Créer une nouvelle page `afficher.php` sur le site pour afficher **une** donnée du site (annonce, film...) suivant le paramètre passé en GET.
+- Modifier la page de listing pour ajouter des liens vers cette page pour chaque donnée.
+
+
+### $_POST
+
+Pour transmettre des données du client au serveur par un formulaire
+
+```html
+<form action="toto.php" method="post">
+	<input name="var1">
+	<input name="var2">
+</form>
+```
+
+```php
+// toto.php
+print_r($_POST);
+echo "var2 = " . $_POST['var2'];
+```
+```
+Array
+(
+    [var1] => toto
+    [var2] => titi
+)
+var2 = toto
+```
+
+Cas particuliers  `select`
+```html
+<select name="var">
+  <option value="">Choisissez une valeur</option>
+  <option value="toto">Toto</option>
+  <option value="titi">Titi</option>
+ </select>
+```
+```php
+echo $_POST["var"];     // "" ou "titi" ou "toto"
+```
+
+Cas particulier `radio`
+
+```html
+<input type="radio" name="var" value="titi"> Titi
+<input type="radio" name="var" value="toto"> Toto
+```
+```php
+if (isset($_POST["var"])) {
+    echo $_POST["var"];     // "titi" ou "toto"
+}
+```
+
+Cas particuliers  `checkbox`
+```html
+<input type="checkbox" name="var" value="titi">
+```
+```php
+if (isset($_POST["var"])) {
+    echo $_POST["var"];		// titi
+}
+```
+
+Cas particuliers  `checkbox` multiple
+```html
+<input type="checkbox" name="var[]" value="titi"> Titi
+<input type="checkbox" name="var[]" value="toto"> Toto
+```
+```php
+if (isset($_POST["var"])) {
+    print_r($_POST["var"]);
+}
+/*
+Array
+(
+    [0] => toto
+    [1] => titi
+)
+*/
+```
+
+> ⚠️ HTTPS !
+
+#### Exercice
+
+- Créer une nouvelle page `ajout.php` avec un formulaire (ex: poster une annonce sur leboncoin, ajouter un film à votre vidéothèque...)
+- Créer une nouvelle page `enregistrer.php` pour afficher les données provenant du formulaire (Page temporaire similaire à `afficher.php`, puisque les données ne sont enregistrées nulle part pour l'instant).
+- Modifier le menu pour ajouter un lien vers la page d'ajout.
+
+
+### $_SESSION
+
+Pour stocker des données pour toute la session de l'utilisateur.
+
+Les données sont stockées côté serveur, le client n'y a pas accès. Le client transmet un cookie (généralement `PHPSESSID`) d'identifiant pour que le serveur lui associe sa session.
+
+- `session_start();` Initialise/charge la session (envoie le cookie au client).
+- `session_destroy();` Supprime la session courante (la session doit être chargée).
+
+```php
+// page1.php
+<?php session_start(); ?>
+$_SESSION['var'] = "toto";
+```
+
+```php
+// page2.php
+<?php session_start(); ?>
+if (isset($_SESSION['var'])) {
+    echo $_SESSION['var']; //     "toto"
+}
+```
+
+```php
+// page3.php
+<?php session_start(); ?>
+print_r($_SESSION); //   Array( [var] => "toto" )
+<?php session_destroy(); ?>
+print_r($_SESSION); //   Array( )
+}
+```
+
+> ⚠️ HTTPS !
+
+#### Exercice
+
+- Modifier la page `enregistrer.php` pour stocker la donnée enregistrer en session.
+- Modifier la page `enregistrer.php` pour remplacer l'affichage par une redirection vers la page `lister.php`
+    - 💡`header('Location: lister.php');`
+- Modifier la page `listeFilms.php`  pour "renvoyer" **toutes** les données (données en dur + les données en session) afin que les pages `lister.php` et `afficher.php` fonctionnent avec **toutes** les données.
+- Sur la page `enregistrer.php`, ajouter en session un message de confirmation qui sera affiché sur la page `lister.php` après la redirection (= message flash).
+- Nettoyer le code (utiliser des fonctions, inclure des fichiers, ajouter des commentaires, renommer les variables...)
+- Créer une page `login.php` (authentification fictive pour l'instant), et modifier le header pour afficher un lien "se connecter" si l'utilisateur n'est pas connecté, afficher "Boujour XXXX" si l'utilisateur est connecté.
+- Modifier la page `lister.php` pour ajouter un lien de suppression sur les éléments.
+- Créer la page `supprimer.php` qui supprime un élément.
+
+### $_FILE
+
+Pour uploader des fichiers.
+
+```html
+<form method="post" action="upload.php" enctype="multipart/form-data">
+    <input name="userfile" type="file" accept="image/*">
+    <input type="submit">
+</form>
+```
+
+> 💡`php.ini` : `upload_max_filesize = 2M` et `post_max_size = 2M`
+
+```php
+// upload.php
+print_r($_FILES);
+/*
+Array
+(
+    [userfile] => Array
+        (
+            [name] => IMG_20211026_223330.jpg
+            [full_path] => IMG_20211026_223330.jpg
+            [type] => image/jpeg
+            [tmp_name] => /tmp/phpVr6TYG
+            [error] => 0
+            [size] => 3078413
+        )
+)
+*/
+
+// Répertoire de destination
+$uploaddir = __DIR__ . '/uploads/';
+// Fichier temporaire
+$tmpfile = $_FILES['userfile']['tmp_name'];
+// nom du fichier original
+$uploadfile = $uploaddir . $_FILES['userfile']['name'];
+// Déplacement du fichier temporaire vers l'emplacement final
+move_uploaded_file($tmpfile, $uploadfile);
+```
+
+Attention à ne pas accepter n'importe quel fichier !
+```php
+$mime_type = mime_content_type($tmpfile);
+
+if (substr($mime_type, 0, 6) == "image/") {
+    // Fichier autorisé
+}
+
+$allowed_file_types = ['image/png', 'image/jpeg', 'application/pdf'];
+if (in_array($mime_type, $allowed_file_types)) {
+    // Fichier autorisé
+ }
+```
+
+
+#### Exercice
+
+Ajouter une gestion d'upload de photos sur le site :
+- Modifier le formulaire sur la page `ajout.php` pour uploader des images
+- Modifier la page `enregistrer.php` pour enregistrer les images
+- Modifier les pages `lister.php` et `afficher.php` pour afficher les images
+
+
+
+
+
+
+## TO BE CONTINUED...
+
+```
+# TODO:
+
+- PDO
+- Authentification
+
+- Url rewriting / Routeur
+
+- POO
+- PDO Objet
+- Composer
+- Bundles ? (log, ...)
+- Twig
+```
