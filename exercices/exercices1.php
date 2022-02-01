@@ -154,6 +154,25 @@ function minimum3(...$nombres) {
     return $min;
 }
 
+function minimum4(...$nombres) {
+
+    if (count($nombres) == 1) {
+        return $nombres[0];
+    }
+
+    $min1 = array_pop($nombres); // Enlève le dernier élément du tableau
+    $min2 = minimum4(...$nombres); // minimum($nombres[0], $nombres[1], $nombres[2]...)
+
+    if ($min1 < $min2) {
+        $minimum = $min1;
+    }
+    else {
+        $minimum = $min2;
+    }
+    //$minimum = ($min1 < $min2) ? $min1 : $min2;
+    return $minimum;
+}
+
 echo "minimum2(1, 2) = " . minimum2(1, 2);
 echo "<br>";
 echo "minimum2(42, 42, 3) = " . minimum2(42, 42, 3);
