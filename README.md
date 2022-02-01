@@ -112,7 +112,6 @@ $a = "Nous sommes en " . $annee; // "Nous sommes en 2022"
 $a = true;
 $b = false;
 
-$c = $a;                       // true
 $c = ! $a;                     // false
 $c = ($a || $b);               // true OR  false       = true
 $c = ($a && $b);               // true AND false       = false
@@ -160,9 +159,9 @@ $b !== $c;        // true
  40  +  2.0           // 42.0
  40  + "2"            // 42
 "40" + "2"            // 42
-"40" . "2"            // 402
- 40  . "2"            // 402
- 40  .  2             // 402
+"40" . "2"            // "402"
+ 40  . "2"            // "402"
+ 40  .  2             // "402"
 ```
 
 **Booléens** : tout est vrai, "rien" est faux
@@ -605,7 +604,7 @@ $alphabet = ['a', 'b', 'c'... 'z' ];
 foreach ($alphabet as $cle => $lettre) {
     // cle = 0, 1, 2...
     // $lettre = a, b, c...
-    echo "La ".($lettre+1)."e lettre de l'alphabet est " . $lettre;
+    echo "La ".($cle+1)."e lettre de l'alphabet est " . $lettre;
 }
 // La 1e lettre de l'alphabet est a
 // La 2e lettre de l'alphabet est b
@@ -620,7 +619,7 @@ $participants = [
     "Paul"    => [ "ville" => "Paris", "age" => 51 ],
     "Jacques" => [ "ville" => "Saint-Pierre-et-Miquelon", "age" => 33 ],
 ];
-foreach ($participant as $prenom => $data) {
+foreach ($participants as $prenom => $data) {
     echo $prenom . " a " . $data['age'] . " ans et habite à " . $data['ville']; 
 }
 // Pierre a 42 ans et habite à Rouen
@@ -973,16 +972,6 @@ Pratique pour plusieurs pages d'un site :
 </html>
 ```
 ```php
-// page1.php
-<html>
-<body>
-<?php require "menu.php"; ?>
-<!-- contenu de la page 1 -->
-<?php require "footer.php"; ?>
-</body>
-</html>
-```
-```php
 // page2.php
 <html>
 <body>
@@ -1097,7 +1086,7 @@ Array
     [var1] => toto
     [var2] => titi
 )
-var2 = toto
+var2 = titi
 ```
 
 #### Exercice
@@ -1112,8 +1101,9 @@ Pour transmettre des données du client au serveur par un formulaire
 
 ```html
 <form action="toto.php" method="post">
-  <input name="var1">
-  <input name="var2">
+	<input name="var1">
+	<input name="var2">
+	<input type="submit">
 </form>
 ```
 
@@ -1131,13 +1121,13 @@ Array
 var2 = toto
 ```
 
-Cas particuliers  `select`
+Cas particulier  `select`
 ```html
 <select name="var">
   <option value="">Choisissez une valeur</option>
   <option value="toto">Toto</option>
   <option value="titi">Titi</option>
-</select>
+ </select>
 ```
 ```php
 echo $_POST["var"];     // "" ou "titi" ou "toto"
@@ -1191,7 +1181,6 @@ Array
 - Créer une nouvelle page `enregistrer.php` pour afficher les données provenant du formulaire (Page temporaire similaire à `afficher.php`, puisque les données ne sont enregistrées nulle part pour l'instant).
 - Modifier le menu pour ajouter un lien vers la page d'ajout.
 
-
 ### $_SESSION
 
 Pour stocker des données pour toute la session de l'utilisateur.
@@ -1204,12 +1193,16 @@ Les données sont stockées côté serveur, le client n'y a pas accès. Le clien
 ```php
 // page1.php
 <?php session_start(); ?>
+...
+<?php
 $_SESSION['var'] = "toto";
 ```
 
 ```php
 // page2.php
 <?php session_start(); ?>
+...
+<?php
 if (isset($_SESSION['var'])) {
     echo $_SESSION['var']; //     "toto"
 }
@@ -1218,8 +1211,10 @@ if (isset($_SESSION['var'])) {
 ```php
 // page3.php
 <?php session_start(); ?>
+...
+<?php
 print_r($_SESSION); //   Array( [var] => "toto" )
-<?php session_destroy(); ?>
+session_destroy();
 print_r($_SESSION); //   Array( )
 }
 ```
@@ -1230,12 +1225,19 @@ print_r($_SESSION); //   Array( )
 
 - Modifier la page `enregistrer.php` pour stocker la donnée enregistrer en session.
 - Modifier la page `enregistrer.php` pour remplacer l'affichage par une redirection vers la page `lister.php`
-  - 💡`header('Location: lister.php');`
 - Modifier la page `listeFilms.php`  pour "renvoyer" **toutes** les données (données en dur + les données en session) afin que les pages `lister.php` et `afficher.php` fonctionnent avec **toutes** les données.
 - Sur la page `enregistrer.php`, ajouter en session un message de confirmation qui sera affiché sur la page `lister.php` après la redirection (= message flash).
 - Nettoyer le code (utiliser des fonctions, inclure des fichiers, ajouter des commentaires, renommer les variables...)
 - Modifier la page `lister.php` pour ajouter un lien de suppression sur les éléments.
 - Créer la page `supprimer.php` qui supprime un élément.
+- Créer la page `modifier.php` pour modifier une donnée : similaire à l'ajout, mais le formulaire est déjà prérempli
+- Modifier la page `enregistrer.php` pour modifie la donnée en session au lieu d'en créer une nouvelle si elle existe déjà.
+  - 💡`<input type="hidden">`
+- Fusionner les pages `ajouter.php` et `modifier.php`
+- Modifier la page `enregistrer.php` pour effectuer des contrôles sur les champs. Si les contrôles sont KO, rediriger vers la page de modification au lieu d'enregistrer, avec un message flash.
+  - 💡`header('Location: lister.php');`
+
+
 
 ### $_FILE
 
@@ -1403,7 +1405,6 @@ else {
 ### Exercice
 
 - Reprendre le site en gérant les données dans une base de données au lieu de la session.
-
 
 ## Authentification
 
