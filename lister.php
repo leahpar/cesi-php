@@ -2,7 +2,8 @@
 
 <?php require "_listeFilms.php"; ?>
 
-<?php foreach ($films as $id => $film) { ?>
+
+<?php foreach ($_SESSION['films'] as $id => $film) { ?>
     <div class="film">
         <a href="/afficher.php?film=<?= $id ?>">
             <h3><?= $film['titre'] ?></h3>

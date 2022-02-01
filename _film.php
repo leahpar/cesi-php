@@ -3,9 +3,9 @@
 
 require_once "_listeFilms.php";
 
-if (isset($films[$id])) {
+if (isset($_SESSION['films'][$id])) {
 
-    $film = $films[$id];
+    $film = $_SESSION['films'][$id];
     ?>
 
     <h1><?= $film['titre'] ?></h1>
