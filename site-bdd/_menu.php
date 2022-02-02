@@ -3,12 +3,14 @@
     <a href="#">Partenaires</a>
     <a href="#">contactez-nous</a>
 
-    <?php if (isset($_SESSION['login'])) { ?>
-        <a href="formulaire.php">Ajouter</a>
-        Bonjour <?= $_SESSION['login'] ?>
+    <?php if (isset($_SESSION['utilisateur'])) { ?>
+        Bonjour <?= $_SESSION['utilisateur']['email'] ?>
         <a href="deconnexion.php">Déconnection</a>
+        <?php if ($_SESSION['utilisateur']['role'] == "ADMIN") { ?>
+            <a href="creer-film">Ajouter</a>
+        <?php }?>
     <?php } else { ?>
-        <a href="#">Inscription</a>
+        <a href="inscription.php">Inscription</a>
         <a href="connexion.php">Connexion</a>
     <?php } ?>
 

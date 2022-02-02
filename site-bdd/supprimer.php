@@ -2,7 +2,8 @@
 // supprimer.php?film=3
 session_start();
 
-if (!isset($_SESSION['login'])) {
+if ( ! isset($_SESSION['utilisateur'])
+    || $_SESSION['utilisateur']['role'] != "ADMIN") {
     $_SESSION['message-class'] = "error";
     $_SESSION['message'] = "vous devez être connecté";
     //$_SESSION['location'] = "formulaire.php";

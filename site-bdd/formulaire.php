@@ -4,9 +4,10 @@
 
 require_once "_bdd.php";
 
-if (!isset($_SESSION['login'])) {
+if ( ! isset($_SESSION['utilisateur'])
+   || $_SESSION['utilisateur']['role'] != "ADMIN") {
     $_SESSION['message-class'] = "error";
-    $_SESSION['message'] = "vous devez être connecté";
+    $_SESSION['message'] = "vous devez être connecté en tant qu'admin";
     $_SESSION['location'] = "formulaire.php";
     header('Location: connexion.php');
     exit;

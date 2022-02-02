@@ -15,7 +15,7 @@ else {
 
 <?php foreach ($films as $film) { ?>
     <div class="film">
-        <a href="afficher.php?film=<?= $film['id'] ?>">
+        <a href="film-<?= $film['id'] ?>-<?= $film['titre'] ?>">
             <h3><?= $film['titre'] ?></h3>
             <p>Sortie : <?= $film["annee"] ?></p>
             <p>Durée :  <?= $film['duree'] ?>min</p>

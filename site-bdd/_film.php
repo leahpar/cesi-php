@@ -23,7 +23,7 @@ if ($film != null) {
     </div>
 
     <p>
-        <a href="formulaire.php?film=<?= $id ?>">
+        <a href="modifier-film-<?= $id ?>">
             Modifier ce film
         </a>
     </p>

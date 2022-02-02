@@ -1,0 +1,4 @@
+RewriteEngine on
+RewriteRule ^film-([0-9]+)-(.*)$            afficher.php?film=$1 [L]
+RewriteRule ^modifier-film-([0-9]+)-(.*)$   formulaire.php?film=$1 [L]
+RewriteRule ^creer-film$                    formulaire.php [L]
