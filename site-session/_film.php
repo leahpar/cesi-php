@@ -21,12 +21,12 @@ if (isset($_SESSION['films'][$id])) {
     </div>
 
     <p>
-        <a href="/formulaire.php?film=<?= $id ?>">
+        <a href="formulaire.php?film=<?= $id ?>">
             Modifier ce film
         </a>
     </p>
     <p>
-        <a href="/supprimer.php?film=<?= $id ?>"
+        <a href="supprimer.php?film=<?= $id ?>"
            onclick="return confirm('Supprimer ce film ?');">
             Supprimer ce film
         </a>

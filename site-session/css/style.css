@@ -1,0 +1,51 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#header, #footer {
+    text-align: center;
+    padding: 10px;
+    background-color: deeppink;
+}
+
+nav {
+    margin: 10px;
+    padding: 5px;
+    background-color: aliceblue;
+}
+
+.content {
+    margin: 10px;
+    padding: 5px;
+}
+
+
+.film {
+    border-radius: 2px;
+    margin: 5px;
+    padding: 5px;
+    border-top: 1px solid aliceblue;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.16), 0 1px 2px rgba(0,0,0,0.23);
+}
+.film:hover {
+    background-color: antiquewhite;
+}
+
+.film a {
+    text-decoration: none;
+}
+
+
+p.success {
+    border-radius: 2px;
+    margin: 5px 20px;
+    padding: 5px;
+    background-color: greenyellow;
+}
+p.error {
+    border-radius: 2px;
+    margin: 5px 20px;
+    padding: 5px;
+    background-color: orangered;
+}

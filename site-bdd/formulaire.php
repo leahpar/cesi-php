@@ -2,6 +2,16 @@
 
 <?php
 
+require_once "_bdd.php";
+
+if (!isset($_SESSION['login'])) {
+    $_SESSION['message-class'] = "error";
+    $_SESSION['message'] = "vous devez être connecté";
+    $_SESSION['location'] = "formulaire.php";
+    header('Location: connexion.php');
+    exit;
+}
+
 if (isset($_SESSION['formulaire'])) {
     $id = $_SESSION['formulaire']['id'];
     $film = [
@@ -14,7 +24,8 @@ if (isset($_SESSION['formulaire'])) {
 }
 else if (isset($_GET['film'])) {
     $id = $_GET['film'];
-    $film = $_SESSION['films'][$id];
+    //$film = $_SESSION['films'][$id];
+    $film = getFilm($id);
     echo "<h1>Modifier un film</h1>";
 }
 else {

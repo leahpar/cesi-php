@@ -2,6 +2,15 @@
 // supprimer.php?film=3
 session_start();
 
+if (!isset($_SESSION['login'])) {
+    $_SESSION['message-class'] = "error";
+    $_SESSION['message'] = "vous devez être connecté";
+    //$_SESSION['location'] = "formulaire.php";
+    header('Location: connexion.php');
+    exit;
+}
+
+
 if (!isset($_GET['film'])) {
     $_SESSION['message-class'] = "error";
     $_SESSION['message'] = "ID film manquant";
