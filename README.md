@@ -1127,7 +1127,7 @@ Cas particulier  `select`
   <option value="">Choisissez une valeur</option>
   <option value="toto">Toto</option>
   <option value="titi">Titi</option>
-</select>
+ </select>
 ```
 ```php
 echo $_POST["var"];     // "" ou "titi" ou "toto"
@@ -1257,7 +1257,6 @@ $_SESSION['message'] = "Film enregistré";
 - Modifier la page `enregistrer.php` pour effectuer des contrôles sur les champs. Si les contrôles sont KO, rediriger vers la page de modification au lieu d'enregistrer, avec un message flash.
 
 
-
 ### $_FILE
 
 Pour uploader des fichiers.
@@ -1280,7 +1279,6 @@ Array
     [userfile] => Array
         (
             [name] => IMG_20211026_223330.jpg
-            [full_path] => IMG_20211026_223330.jpg
             [type] => image/jpeg
             [tmp_name] => /tmp/phpVr6TYG
             [error] => 0
@@ -1293,7 +1291,7 @@ Array
 $uploaddir = __DIR__ . '/uploads/';
 // Fichier temporaire
 $tmpfile = $_FILES['userfile']['tmp_name'];
-// nom du fichier original
+// nom du fichier final
 $uploadfile = $uploaddir . $_FILES['userfile']['name'];
 // Déplacement du fichier temporaire vers l'emplacement final
 move_uploaded_file($tmpfile, $uploadfile);
@@ -1320,6 +1318,13 @@ Ajouter une gestion d'upload de photos sur le site :
 - Modifier le formulaire sur la page `ajout.php` pour uploader des images
 - Modifier la page `enregistrer.php` pour enregistrer les images
 - Modifier les pages `lister.php` et `afficher.php` pour afficher les images
+
+#### Exercice
+
+Gérer une session utilisateur sur le site :
+- créer une page `connexion.php` : connexion fictive, qui enregistre simplement le pseudo en session
+- créer une page `déconnexion.php` : détruit la session
+- Modifier le menu et les diverses pages pour ne pouvoir créer/modifier/supprimer seulement si on est connecté
 
 
 
@@ -1380,11 +1385,13 @@ $count = $rows[0]['cpt'];
 $request = $db->prepare("SELECT * FROM ... where col = :value");
 $request->bindValue(':value', $value);
 $request->execute();
+$rows  =  $request->fetchAll();
 ```
 
 #### INSERT
 ```php
 $req = $db->prepare("INSERT ... ");
+$req->bindValue(':value', $value);
 $req->execute();
 $last_id = $db->lastInsertId();
 ```
@@ -1392,12 +1399,14 @@ $last_id = $db->lastInsertId();
 #### UPDATE
 ```php
 $req = $db->prepare("UPDATE ... ");
+$req->bindValue(':value', $value);
 $req->execute();
 ```
 
 #### DELETE
 ```php
 $req = $db->prepare("DELETE ... ");
+$req->bindValue(':value', $value);
 $req->execute();
 ```
 
@@ -1424,8 +1433,13 @@ else {
 ### Exercice
 
 - Reprendre le site en gérant les données dans une base de données au lieu de la session.
+- => `index.php`
+- Ajouter une recherche sur la page lister.php
+- Plus tard : ajouter une gestion des catégories ou équivalent
 
-## Authentification
+## Divers
+
+### Authentification
 
 2 fonctions utiles :
 
@@ -1446,7 +1460,7 @@ $check = password_verify("toto123", $password);    // $check = true
 Le reste c'est **juste** du stockage d'utilisateurs en base et de la gestion de session !
 
 
-### Exercice
+#### Exercice
 
 - Ajouter une page `inscription.php` pour que les utilisateurs puissent s'inscrire :
   1. Formulaire avec pseudo et mot de passe
@@ -1461,6 +1475,37 @@ Le reste c'est **juste** du stockage d'utilisateurs en base et de la gestion de 
   1. Détruire la session
 
 
+###  Url rewriting
+
+Pour transformer des url "moches" :
+
+```
+http://example.com/truc-complique-a-rallonge.php
+http://example.com/machin.php?var1=titi&var2=tata
+```
+
+en url "jolies" :
+
+```
+http://example.com/truc
+http://example.com/machin-titi-tata
+```
+
+On utilise un fichier `.htaccess`, qui permet de configurer le serveur web pour le répertoire courant.
+
+```htaccess
+RewriteEngine on
+RewriteRule ^truc$   truc-complique-a-rallonge.php [L]
+RewriteRule ^machin-(.*)-(.*)$   machin.php?var1=$1&var2=$2 [L]
+```
+
+#### Exercice
+
+- Utiliser un `.htaccess` pour faire des "jolies" url sur votre site.
+
+
+
+
 
 ## TO BE CONTINUED...
 
@@ -1470,12 +1515,14 @@ Le reste c'est **juste** du stockage d'utilisateurs en base et de la gestion de 
 
 *TODO*
 
+
+
 => BotChat (API / JSON)
 
-- Url rewriting / Routeur
 - POO
 - PDO Objet
+- Routeur
 - Composer
-- Bundles ? (log, ...)
+- Bundles (log, ...)
 - Twig
 
