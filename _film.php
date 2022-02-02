@@ -20,6 +20,18 @@ if (isset($_SESSION['films'][$id])) {
         <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce pretium mollis viverra. Cras orci nunc, tristique non ex quis, bibendum auctor dui. Nullam efficitur aliquet nisi. Etiam ac nisi enim. Sed volutpat lorem magna, at accumsan lorem convallis sit amet. Quisque ut tempus velit, a volutpat libero. Morbi sit amet malesuada massa. Pellentesque et purus interdum, iaculis mi eget, mattis magna. Aenean elementum mauris leo, id aliquet sapien accumsan eu. Vestibulum sed interdum orci. Praesent vel enim dignissim dui aliquet porttitor. Integer faucibus magna a risus tincidunt scelerisque.</p>
     </div>
 
+    <p>
+        <a href="/formulaire.php?film=<?= $id ?>">
+            Modifier ce film
+        </a>
+    </p>
+    <p>
+        <a href="/supprimer.php?film=<?= $id ?>"
+           onclick="return confirm('Supprimer ce film ?');">
+            Supprimer ce film
+        </a>
+    </p>
+
 <?php } else { ?>
     Film <?= $id ?> inexistant
 <?php } ?>

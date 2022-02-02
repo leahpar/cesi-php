@@ -1101,9 +1101,9 @@ Pour transmettre des données du client au serveur par un formulaire
 
 ```html
 <form action="toto.php" method="post">
-	<input name="var1">
-	<input name="var2">
-	<input type="submit">
+  <input name="var1">
+  <input name="var2">
+  <input type="submit">
 </form>
 ```
 
@@ -1127,7 +1127,7 @@ Cas particulier  `select`
   <option value="">Choisissez une valeur</option>
   <option value="toto">Toto</option>
   <option value="titi">Titi</option>
- </select>
+</select>
 ```
 ```php
 echo $_POST["var"];     // "" ou "titi" ou "toto"
@@ -1218,13 +1218,32 @@ session_destroy();
 print_r($_SESSION); //   Array( )
 }
 ```
-
 > ⚠️ HTTPS !
+
+#### Message flash
+
+```php
+// page1.php
+$_SESSION['message-class'] = "success";
+$_SESSION['message'] = "Film enregistré";
+```
+
+```php
+// page2.php
+<?php if (isset($_SESSION['message'])) { ?>
+    <p class="<?= $_SESSION['message-class']?>">
+        <?= $_SESSION['message'] ?>
+    </p>
+    <?php
+    unset($_SESSION['message']);
+}
+```
 
 #### Exercice
 
 - Modifier la page `enregistrer.php` pour stocker la donnée enregistrer en session.
 - Modifier la page `enregistrer.php` pour remplacer l'affichage par une redirection vers la page `lister.php`
+  -   💡`header('Location: lister.php');`
 - Modifier la page `listeFilms.php`  pour "renvoyer" **toutes** les données (données en dur + les données en session) afin que les pages `lister.php` et `afficher.php` fonctionnent avec **toutes** les données.
 - Sur la page `enregistrer.php`, ajouter en session un message de confirmation qui sera affiché sur la page `lister.php` après la redirection (= message flash).
 - Nettoyer le code (utiliser des fonctions, inclure des fichiers, ajouter des commentaires, renommer les variables...)
@@ -1234,8 +1253,8 @@ print_r($_SESSION); //   Array( )
 - Modifier la page `enregistrer.php` pour modifie la donnée en session au lieu d'en créer une nouvelle si elle existe déjà.
   - 💡`<input type="hidden">`
 - Fusionner les pages `ajouter.php` et `modifier.php`
+- Ajouter un CSRF sur le formulaire
 - Modifier la page `enregistrer.php` pour effectuer des contrôles sur les champs. Si les contrôles sont KO, rediriger vers la page de modification au lieu d'enregistrer, avec un message flash.
-  - 💡`header('Location: lister.php');`
 
 
 
@@ -1445,17 +1464,18 @@ Le reste c'est **juste** du stockage d'utilisateurs en base et de la gestion de 
 
 ## TO BE CONTINUED...
 
-```
-# TODO:
 
-- PDO
-- Authentification
+
+
+
+*TODO*
+
+=> BotChat (API / JSON)
 
 - Url rewriting / Routeur
-
 - POO
 - PDO Objet
 - Composer
 - Bundles ? (log, ...)
 - Twig
-```
+

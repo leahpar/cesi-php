@@ -10,6 +10,9 @@
             <p>Sortie : <?= $film["annee"] ?></p>
             <p>Durée :  <?= $film['duree'] ?>min</p>
         </a>
+        <?php if ($film["image"] != '') { ?>
+            <img src="/uploads/<?= $film["image"] ?>" width="200x">
+        <?php } ?>
     </div>
 <?php } ?>
 
