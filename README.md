@@ -227,23 +227,23 @@ echo $prenoms;
 // PHP Warning:  Array to string conversion
 
 print_r($prenoms);
-/**
+/*
 Array
 (
     [0] => Pierre
     [1] => Paul
     [2] => Jacques
 )
-**/
+*/
 
 var_dump($prenoms);
-/**
+/*
 array(3) {
   [0] => string(6) "Pierre"
   [1] => string(4) "Paul"
   [2] => string(7) "Jacques"
 }
-**/
+*/
 ```
 
 **Tableaux associatifs**
@@ -1101,9 +1101,9 @@ Pour transmettre des données du client au serveur par un formulaire
 
 ```html
 <form action="toto.php" method="post">
-  <input name="var1">
-  <input name="var2">
-  <input type="submit">
+	<input name="var1">
+	<input name="var2">
+	<input type="submit">
 </form>
 ```
 
@@ -1468,7 +1468,7 @@ Le reste c'est **juste** du stockage d'utilisateurs en base et de la gestion de 
   3. Chiffrer le mot de passe et ajout d'une ligne dans la table `utilisateurs`
 - Ajouter une page `connexion.php` pour que les utilisateurs puissent se connecter
   1. Formulaire avec pseudo et mot de passe
-  2. Véfifier que le pseudo existe en base
+  2. Vérifier que le pseudo existe en base
   3. Vérifier que le mot de passe correspond
   4. Créer une session et stocker le pseudo de l'utilisateur
 - Ajouter une page `deconnexion.php`
@@ -1504,25 +1504,225 @@ RewriteRule ^machin-(.*)-(.*)$   machin.php?var1=$1&var2=$2 [L]
 - Utiliser un `.htaccess` pour faire des "jolies" url sur votre site.
 
 
+## API WEB
 
+> Application Programming Interface
 
+Navigateur = Interface Homme <=> Machine
 
-## TO BE CONTINUED...
+API = Interface Machine <=> Machine
 
+C'est déjà une API entre le navigateur et le serveur !
 
+```bash
+curl -X POST 'http://cesi.local/site-bdd/connexion.php' --data-raw 'login=admin@toto.com&password=azeaze'`
+```
 
+```
+HTTP/1.1 302 Found
+Date: Wed, 02 Feb 2022 07:05:45 GMT
+Server: Apache/2.4.51 (Unix)
+X-Powered-By: PHP/8.1.2
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate
+Pragma: no-cache
+Set-Cookie: PHPSESSID=tmvdmhrpmlt0nkd629is85at1n; path=/
+Location: index.php
+Transfer-Encoding: chunked
+Content-Type: text/html; charset=UTF-8
+```
 
+```bash
+curl -X GET 'http://cesi.local/site-bdd/index.php'
+```
 
-*TODO*
+```
+HTTP/1.1 200 OK
+Date: Wed, 02 Feb 2022 07:02:11 GMT
+Server: Apache/2.4.51 (Unix)
+X-Powered-By: PHP/8.1.2
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate
+Pragma: no-cache
+Transfer-Encoding: chunked
+Content-Type: text/html; charset=UTF-8
+<html>
+...
+...
+...
+...
+</html>
+```
 
+### Standards web
 
+- Requêtes HTTP :
+  -  `GET` pour récupérer une ressource
+  - `POST` pour créer une ressource
+  - `PATCH` / `PUT` pour modifier une ressource
+  - `DELETE` pour supprimer une ressource
+- Réponse HTTP ([wikipedia](https://fr.wikipedia.org/wiki/Liste_des_codes_HTTP)) :
+  - `2xx` OK
+  - `3xx` Redirections
+  - `4xx` Erreurs du client
+  - `5xx` Erreurs du serveur
+- Formats de données
+  - `html`
+  - `json`
+  - `xml`
+  - `csv`
+  - ...
 
-=> BotChat (API / JSON)
+>💡Pour tester une API : Postman, Insomnia...
 
-- POO
-- PDO Objet
-- Routeur
-- Composer
-- Bundles (log, ...)
-- Twig
+### [serveur] renvoyer du json
 
+... à la place de l'html.
+
+`header('Content-Type: application/json');` pour indiquer qu'on renvoie du json.
+
+```php
+<?php header('Content-Type: application/json'); ?>
+{
+    id: 1,
+    titre: "Kill bill",
+    annee: 2003
+}
+```
+```php
+<?php header('Content-Type: application/json'); ?>
+<?php
+$film = [...];
+?>
+{
+    id: <?= $film['id'] ?>,
+    titre: <?= $film['titre'] ?>,
+    annee: <?= $film['annee'] ?>
+}
+```
+```php
+<?php header('Content-Type: application/json'); ?>
+<?php
+$film = [...];
+echo json_encode($film);  // { id: 1, titre: "Kill bill", annee: 2003 }
+?>
+```
+
+### [serveur] recevoir du json
+
+... à la place de $_POST.
+
+```php
+$json = file_get_contents("php://input");
+$film = json_decode($json, true);
+print_r($film);
+/*
+array(3) {
+  [titre] => "Kill bill"
+  [annee] => "2003"
+  [duree] => "123"
+}
+*/
+```
+
+### [client] récupérer du json
+
+```javascript
+// Javascript
+xhr = new XMLHttpRequest();
+xhr.open("GET", "toto.php");
+xhr.setRequestHeader("Accept", "application/json");
+xhr.responseType = 'json';
+xhr.onload  = function() {
+    data = xhr.response;
+    console.log(data);
+    /*
+    data = {
+        id: 1,
+        titre: "Kill bill",
+        annee: 2003
+    }
+    */
+};
+req.send();
+```
+
+```javascript
+// JQuery
+$.ajax({
+    type: "GET",
+    url: "toto.php",
+    dataType: "json",
+    success: (data) => console.log(data),
+});
+```
+
+```php
+// PHP
+$curl = curl_init("toto.php");
+curl_setopt($curl, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($curl);
+curl_close($curl);
+$data = json_decode($response, true);
+/*
+$data = [
+  "titre" => "Kill bill"
+  "annee" => "2003"
+  "duree" => "123"
+]
+ */
+```
+
+### [client] envoyer du json
+
+```javascript
+// Javascript
+data = {
+    id: 1,
+    titre: "Kill bill",
+    annee: 2003
+};
+
+xhr = new XMLHttpRequest();
+xhr.open("POST", "toto.php");
+xhr.setRequestHeader("Content-Type", "application/json");
+xhr.send(JSON.stringify(data));
+```
+
+```javascript
+// JQuery
+$.ajax({
+    type: "POST",
+    url: "toto.php",
+    dataType: 'json',
+    data: JSON.stringify(data),
+    success: (e) => console.log(e),
+});
+```
+
+```php
+// PHP
+$curl = curl_init("toto.php");
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($curl);
+curl_close($curl);
+```
+
+### Exercice
+
+- Créer les scripts  :
+  - `api/get_films.php`  pour récupérer tous les films
+  - `api/get_film.php` pour récupérer un film
+  - `api/post.php` pour poster un film
+  - `api/patch.php` pour modifier un film
+  - `api/delete.php` pour supprimer un film
+- Trucs à faire :
+  - fonction lecture requête json / écriture réponse json
+  - fonction d'erreur (message + code)
+  - Vérifier la méthode => `$_SERVER['REQUEST_METHOD']`
+  - Pagination
+  - ...
